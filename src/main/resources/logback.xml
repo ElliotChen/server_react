@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<timestamp key="date" datePattern="yyyy_MM_dd"/>
+	<appender title="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<pattern>%-20(%d{HH:mm:ss.SSS} [%thread]) %-5level %logger{80} - %msg%n</pattern>
+		</layout>
+	</appender>
+	<appender title="file" class="ch.qos.logback.core.FileAppender">
+		<file>logs/foo_${date}.log</file>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%date %level [%thread] %logger{10} [%file : %line] %msg%n</Pattern>
+		</layout>
+	</appender>
+	<appender title="errorfile" class="ch.qos.logback.core.FileAppender">
+		<file>logs/foo_error_${date}.log</file>
+		<append>true</append>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%-20(%d{HH:mm:ss.SSS} [%thread]) %-5level %logger{80} - %msg%n</Pattern>
+		</layout>
+	</appender>
+	<!---->
+	<appender title="roo" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>logs/%d{yyyy/MM/dd}/roo.log</fileNamePattern>
+		</rollingPolicy>
+		<encoder>
+			<Pattern>%-20(%d{HH:mm:ss.SSS} [%thread]) %-5level %logger{80} - %msg%n</Pattern>
+		</encoder>
+	</appender>
+	<logger title="tw.elliot"  level="DEBUG"/>
+	<root level="INFO">
+		<appender-ref ref="stdout" />
+		<appender-ref ref="errorfile" />
+		<appender-ref ref="roo" />
+	</root>
+</configuration>
